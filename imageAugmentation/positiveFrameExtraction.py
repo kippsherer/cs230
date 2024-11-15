@@ -10,8 +10,8 @@ from glob import glob
 # set some easily adjustable values
 FPS = 30
 FRAMEFACTOR = 2         # use every FRAMEFACTOR frames to create images
-FRAMEMULTIPLIER = 2     # number of shifted frames created
-ROTATIONMULTIPLIER = 4  # number of additional rotated frames per FRAMEMULTIPLIER
+FRAMEMULTIPLIER = 1     # number of shifted frames created
+ROTATIONMULTIPLIER = 2  # number of additional rotated frames per FRAMEMULTIPLIER
 ROTATIONMAXDEGREES = 12 # max tilt CW or CCW
 FRAME224 = 224
 FRAMEMED = FRAME224 * 2
