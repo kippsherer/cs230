@@ -13,8 +13,7 @@ BATCH_SIZE = 32
 IMG_SIZE = (224, 224)
 SEED = 42
 
-if dataset_cache is None:
-    dataset_cache = {'train':False, 'dev':False, 'test':False}
+dataset_cache = {'train':False, 'dev':False, 'test':False}
 
 # returns (images, labels), where 
 # images has shape (batch_size, image_size[0], image_size[1], num_channels), and 
