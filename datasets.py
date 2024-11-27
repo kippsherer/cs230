@@ -20,7 +20,7 @@ dataset_cache = {'train':False, 'dev':False, 'test':False}
 # labels are a float32 tensor of 1s and 0s of shape (batch_size, 1)
 def get_dataset_train():
     if dataset_cache['train'] == False:
-        dataset_cache['train'] = image_dataset_from_directory(IMAGE_DIRECTORY+'train',
+        dataset_cache['train'] = image_dataset_from_directory(DATASET_DIRECTORY+'train',
                                              shuffle=True,
                                              batch_size=BATCH_SIZE,
                                              image_size=IMG_SIZE,
@@ -35,7 +35,7 @@ def get_dataset_train():
 # labels are a float32 tensor of 1s and 0s of shape (batch_size, 1)
 def get_dataset_dev():
     if dataset_cache['dev'] == False:
-        dataset_cache['dev'] = image_dataset_from_directory(IMAGE_DIRECTORY+'dev',
+        dataset_cache['dev'] = image_dataset_from_directory(DATASET_DIRECTORY+'dev',
                                              shuffle=True,
                                              batch_size=BATCH_SIZE,
                                              image_size=IMG_SIZE,
@@ -50,7 +50,7 @@ def get_dataset_dev():
 # labels are a float32 tensor of 1s and 0s of shape (batch_size, 1)
 def get_dataset_test():
     if dataset_cache['test'] == False:
-        dataset_cache['test'] = image_dataset_from_directory(IMAGE_DIRECTORY+'test',
+        dataset_cache['test'] = image_dataset_from_directory(DATASET_DIRECTORY+'test',
                                              shuffle=True,
                                              batch_size=BATCH_SIZE,
                                              image_size=IMG_SIZE,
