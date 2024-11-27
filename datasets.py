@@ -26,7 +26,6 @@ def get_dataset_train():
                                              batch_size=BATCH_SIZE,
                                              image_size=IMG_SIZE,
                                              label_mode='binary',
-                                             shuffle=True,
                                              seed=SEED)
 
     return dataset_cache['train']
@@ -42,7 +41,6 @@ def get_dataset_dev():
                                              batch_size=BATCH_SIZE,
                                              image_size=IMG_SIZE,
                                              label_mode='binary',
-                                             shuffle=True,
                                              seed=SEED)
 
     return dataset_cache['dev']
@@ -58,7 +56,6 @@ def get_dataset_test():
                                              batch_size=BATCH_SIZE,
                                              image_size=IMG_SIZE,
                                              label_mode='binary',
-                                             shuffle=True,
                                              seed=SEED)
 
     return dataset_cache['test']
