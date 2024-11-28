@@ -33,11 +33,17 @@ ds_dev_std = ds_dev.map(ds.standardize_image)
 #ds_test = ds.get_dataset_test()
 #ds_test_std = ds_test.map(ds.standardize_image)
 
+#ds_test_dark = ds.get_dataset_test_dark()
+#ds_test_dark_std = ds_test_dark.map(ds.standardize_image)
+
 
 # iterating over dataset
 #for epochs in range(10):
 #    for x,y in ds_train
 #        #training
+
+# create model
+# 3 Conv layers, 2 FC layers
 model = keras.Sequential(
     [
         keras.Input(shape=(224,224,3)),
@@ -71,13 +77,25 @@ model.compile(
         ),
     optimizer=keras.optimizers.Adam(learning_rate=0.001),
     metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall(), tf.keras.metrics.F1Score(), 
-            tf.keras.metrics.BinaryCrossentropy(), tf.keras.metrics.BinaryAccuracy(), 
             tf.keras.metrics.FalseNegatives(), tf.keras.metrics.FalsePositives() ],
 )
 
-model.fit(ds_train_std, epochs=10, verbose=2)
+history = model.fit(ds_train_std, epochs=10, verbose=2)
+print (history.history)
 
-model.evaluate(ds_dev_std, verbose=2)
+statistics = ['binary_crossentropy', 'accuracy', 'precision', 'recall', 'f1_score', 'false_negatives', 'false_positives']
+
+print ("Dev dataset")
+result = model.evaluate(ds_dev_std, verbose=2)
+print ( dict(zip(statistics, result)) )
+
+print ("Test dataset")
+result = model.evaluate(ds_test_std, verbose=2)
+print ( dict(zip(statistics, result)) )
+
+print ("Test Dark dataset")
+result = model.evaluate(ds_test_dark_std, verbose=2)
+print ( dict(zip(statistics, result)) )
 
 
 
