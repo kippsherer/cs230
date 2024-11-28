@@ -15,7 +15,7 @@ BATCH_SIZE = 32
 IMG_SIZE = (224, 224)
 SEED = 42
 
-dataset_cache = {'train':False, 'dev':False, 'test':False}
+dataset_cache = {'train':False, 'dev':False, 'test':False, 'test_dark':False}
 
 # returns (images, labels), where 
 # images has shape (batch_size, image_size[0], image_size[1], num_channels), and 
@@ -60,6 +60,21 @@ def get_dataset_test():
                                              seed=SEED)
 
     return dataset_cache['test']
+
+
+# returns (images, labels), where 
+# images has shape (batch_size, image_size[0], image_size[1], num_channels), and 
+# labels are a float32 tensor of 1s and 0s of shape (batch_size, 1)
+def get_dataset_test_dark():
+    if dataset_cache['test_dark'] == False:
+        dataset_cache['test_dark'] = image_dataset_from_directory(DATASET_DIRECTORY+'test_dark',
+                                             shuffle=True,
+                                             batch_size=BATCH_SIZE,
+                                             image_size=IMG_SIZE,
+                                             label_mode='binary',
+                                             seed=SEED)
+
+    return dataset_cache['test_dark']
 
 
 def show_dataset_statistics(dataset):
