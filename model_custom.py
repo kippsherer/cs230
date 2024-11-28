@@ -1,47 +1,35 @@
 #!/usr/bin/env python
 
+# In[ ]:
+
+# %cd /home/ubuntu/files/cs230
+
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
-#import time
 #import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 #import matplotlib.pyplot as plt
-#from tensorflow.python.framework.ops import EagerTensor
-#from tensorflow.python.ops.resource_variable_ops import ResourceVariable
 
 import datasets as ds
 
+# In[ ]:
 # to enable GPUs
 GPUs = tf.config.list_physical_devices('GPU')
 print("Number of GPUs Available: ", len(GPUs))
 tf.config.experimental.set_memory_growth(GPUs[0], True)
 
-
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
-# retrieve our datasets
+# In[ ]:
+# retrieve our training dataset
 ds_train = ds.get_dataset_train()
 ds_train = ds_train.prefetch(buffer_size=AUTOTUNE)
 ds_train_std = ds_train.map(ds.standardize_image)
 
-ds_dev = ds.get_dataset_dev()
-ds_dev_std = ds_dev.map(ds.standardize_image)
 
-#ds_test = ds.get_dataset_test()
-#ds_test_std = ds_test.map(ds.standardize_image)
-
-#ds_test_dark = ds.get_dataset_test_dark()
-#ds_test_dark_std = ds_test_dark.map(ds.standardize_image)
-
-
-# iterating over dataset
-#for epochs in range(10):
-#    for x,y in ds_train
-#        #training
-
+# In[ ]:
 # create model
 # 3 Conv layers, 2 FC layers
 model = keras.Sequential(
@@ -63,10 +51,11 @@ model = keras.Sequential(
     ]
 )
 
-
 print (model.summary())
 
 
+# In[ ]:
+# compile the model
 model.compile(
     loss=keras.losses.BinaryCrossentropy(
             #from_logits=True,
@@ -80,20 +69,36 @@ model.compile(
             tf.keras.metrics.FalseNegatives(), tf.keras.metrics.FalsePositives() ],
 )
 
+# In[ ]:
+# train the model
 history = model.fit(ds_train_std, epochs=10, verbose=2)
 print (history.history)
 
-statistics = ['binary_crossentropy', 'accuracy', 'precision', 'recall', 'f1_score', 'false_negatives', 'false_positives']
 
+# In[ ]:
+# evaluate the model with the dev dataset
+statistics = ['binary_crossentropy', 'accuracy', 'precision', 'recall', 'f1_score', 'false_negatives', 'false_positives']
 print ("Dev dataset")
+ds_dev = ds.get_dataset_dev()
+ds_dev_std = ds_dev.map(ds.standardize_image)
 result = model.evaluate(ds_dev_std, verbose=2)
 print ( dict(zip(statistics, result)) )
 
+
+# In[ ]:
+# evaluate the model with the test dataset
 print ("Test dataset")
+ds_test = ds.get_dataset_test()
+ds_test_std = ds_test.map(ds.standardize_image)
 result = model.evaluate(ds_test_std, verbose=2)
 print ( dict(zip(statistics, result)) )
 
+
+# In[ ]:
+# evaluate the model with the test dataset
 print ("Test Dark dataset")
+ds_test_dark = ds.get_dataset_test_dark()
+ds_test_dark_std = ds_test_dark.map(ds.standardize_image)
 result = model.evaluate(ds_test_dark_std, verbose=2)
 print ( dict(zip(statistics, result)) )
 
