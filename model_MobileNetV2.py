@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# coding: utf-8
 
 # In[ ]:
 
@@ -11,7 +10,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 import datasets as ds
 
@@ -32,27 +31,32 @@ ds_train_std = ds_train.map(ds.standardize_image)
 
 # In[ ]:
 # create model
-# 3 Conv layers, 2 FC layers
-model = keras.Sequential(
-    [
-        keras.Input(shape=(224,224,3)),
-        layers.Conv2D(32, (3,3), padding='valid', activation='relu'),
-        layers.MaxPooling2D(pool_size=(2,2)),
+DROPOUT_PROP = 0.2
+IMG_SHAPE = ds.IMG_SIZE + (3,)
 
-        layers.Conv2D(64, (3,3), padding='valid', activation='relu'),
-        layers.MaxPooling2D(pool_size=(2,2)),
-
-        layers.Conv2D(128, (3,3), padding='valid', activation='relu'),
-        layers.MaxPooling2D(pool_size=(2,2)),
-
-        layers.Flatten(),
-        layers.Dense(16, activation='relu'),
-        layers.Dense(1, activation='sigmoid'),
-
-    ]
+base_model = tf.keras.applications.MobileNetV2(
+    input_shape=IMG_SHAPE,
+    include_top=False,
+    alpha=1.0,
+    weights="imagenet",
+    input_tensor=None
 )
 
-print (model.summary())
+
+#model.trainable = True
+#fine_tune_at = 120
+#for layer in base_model.layers[:fine_tune_at]:
+#    layer.trainable = False
+
+
+base_model.trainable = False
+inputs = tf.keras.Input(shape=IMG_SHAPE)
+x = base_model(inputs, training=False)
+x = layers.GlobalAveragePooling2D()(x)
+x = layers.Dropout(DROPOUT_PROP)(x)
+outputs = layers.Dense(1, activation='sigmoid')(x)
+
+model = tf.keras.Model(inputs, outputs)
 
 
 # In[ ]:
@@ -102,6 +106,29 @@ ds_test_dark = ds.get_dataset_test_dark()
 ds_test_dark_std = ds_test_dark.map(ds.standardize_image)
 result = model.evaluate(ds_test_dark_std, verbose=2)
 print ( dict(zip(statistics, result)) )
+
+
+acc = [0.] + history.history['accuracy']
+loss = history.history['loss']
+
+plt.figure(figsize=(10, 10))
+plt.subplot(2, 1, 1)
+plt.plot(acc, label='Training Accuracy')
+#plt.plot(val_acc, label='Validation Accuracy')
+plt.legend(loc='lower right')
+plt.ylabel('Accuracy')
+plt.ylim([min(plt.ylim()),1])
+plt.title('Training and Accuracy')
+
+plt.subplot(2, 1, 2)
+plt.plot(loss, label='Training Loss')
+#plt.plot(val_loss, label='Validation Loss')
+plt.legend(loc='upper right')
+plt.ylabel('Cross Entropy')
+plt.ylim([0,1.0])
+plt.title('Training Loss')
+plt.xlabel('epoch')
+plt.show()
 
 
 
