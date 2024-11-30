@@ -26,14 +26,14 @@ IMG_SHAPE = ds.IMG_SIZE + (3,)
 # image standardization
 # used for MobileNetV2 models
 def standardize_image(image, label):
-    return tf.keras.applications.mobilenet_v2.preprocess_input(image), label
+    return tf.keras.applications.resnet.preprocess_input(image), label
 
 
-# create model MobileNetV2_1a
-# regular MobileNetV2 trained on imagenet, with just last layers replace to be single sigmoid out
-def get_model_MobileNetV2_1a():
-    #start with base MobileNetV2
-    base_model = tf.keras.applications.MobileNetV2(
+# create model ResNet101_1a
+# regular ResNet101 trained on imagenet, with just last layers replace to be single sigmoid out
+def get_model_ResNet101_1a():
+    #start with base ResNet101
+    base_model = tf.keras.applications.ResNet101(
         input_shape=IMG_SHAPE,
         include_top=False,
         alpha=1.0,
@@ -59,12 +59,12 @@ def get_model_MobileNetV2_1a():
     return model
 
 
-# create model MobileNetV2_1b
-# regular MobileNetV2 trained on imagenet, with layers above 120 trainable
+# create model ResNet101_1b
+# regular ResNet101 trained on imagenet, with layers above 120 trainable
 # last layers replace to be single sigmoid out
-def get_model_MobileNetV2_1b():
-    #start with base MobileNetV2
-    base_model = tf.keras.applications.MobileNetV2(
+def get_model_ResNet101_1b():
+    #start with base ResNet101
+    base_model = tf.keras.applications.ResNet101(
         input_shape=IMG_SHAPE,
         include_top=False,
         alpha=1.0,
@@ -88,32 +88,3 @@ def get_model_MobileNetV2_1b():
 
     return model
 
-
-# create model MobileNetV2_1c
-# regular MobileNetV2 trained on imagenet, with layers above 140 trainable
-# last layers replace to be single sigmoid out
-def get_model_MobileNetV2_1c():
-    #start with base MobileNetV2
-    base_model = tf.keras.applications.MobileNetV2(
-        input_shape=IMG_SHAPE,
-        include_top=False,
-        alpha=1.0,
-        weights="imagenet",
-        input_tensor=None
-    )
-
-    # tune which layers are adjusted during training
-    base_model.trainable = True
-    fine_tune_at = 140
-    for layer in base_model.layers[:fine_tune_at]:
-        layer.trainable = False
-
-    inputs = tf.keras.Input(shape=IMG_SHAPE)
-    x = base_model(inputs, training=False)
-    x = layers.GlobalAveragePooling2D()(x)
-    x = layers.Dropout(0.2)(x)      # using .2 dropout for this model
-    outputs = layers.Dense(1, activation='sigmoid')(x)
-
-    model = tf.keras.Model(inputs, outputs)
-
-    return model
