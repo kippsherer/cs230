@@ -96,10 +96,3 @@ def show_dataset_samples(dataset, cnt=1):
 #        plt.axis("off")
         
 
-
-# image standardization
-# used for our custom models
-def standardize_image(image, label):
-    #return tf.image.per_image_standardization(image), label
-    return tf.cast(image, tf.float32) / 255.0, label
-

@@ -13,8 +13,9 @@ from tensorflow import keras
 import matplotlib.pyplot as plt
 
 import datasets as ds
-import models_MobileNetV2 as mnv2
-import models_ResNet101V2 as rnv2
+#import models_MobileNetV2 as mnv2
+#import models_ResNet101 as rn
+import models_Custom as cus
 
 
 # to enable GPUs
@@ -27,13 +28,17 @@ IMG_SHAPE = ds.IMG_SIZE + (3,)
 
 
 # get the model we want to train, set the preprocessing function
+#standardize_image = mnv2.standardize_image
 #model = mnv2.get_model_MobileNetV2_1a()
 #model = mnv2.get_model_MobileNetV2_1b()
 #model = mnv2.get_model_MobileNetV2_1c()
-#standardize_image = mnv2.standardize_image
 
-model = rnv2.get_model_ResNet101_1a()
-standardize_image = rnv2.standardize_image
+#standardize_image = rn.standardize_image
+#model = rn.get_model_ResNet101_1b()
+
+
+standardize_image = cus.standardize_image
+model = cus.get_model_Custom_1a()
 
 
 # compile the model
@@ -45,7 +50,7 @@ model.compile(
             reduction='sum_over_batch_size',
             name='binary_crossentropy'
         ),
-    optimizer=keras.optimizers.Adam(learning_rate=0.001),
+    optimizer=keras.optimizers.Adam(learning_rate=0.0001),
     metrics=['accuracy', tf.keras.metrics.Precision(), tf.keras.metrics.Recall(), tf.keras.metrics.F1Score(), 
             tf.keras.metrics.FalseNegatives(), tf.keras.metrics.FalsePositives() ],
 )
@@ -59,7 +64,7 @@ ds_train_std = ds_train.map(standardize_image)
 
 
 # standardize the dataset and train the model
-history = model.fit(ds_train_std, epochs=15, verbose=2)
+history = model.fit(ds_train_std, epochs=7, verbose=2)
 print (history.history)
 
 

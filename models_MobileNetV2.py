@@ -1,25 +1,12 @@
 #!/usr/bin/env python
 
-# In[ ]:
-# %cd /home/ubuntu/files/cs230
-
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-#import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
-#import matplotlib.pyplot as plt
 
 import datasets as ds
-
-# In[ ]:
-# to enable GPUs
-#GPUs = tf.config.list_physical_devices('GPU')
-#print("Number of GPUs Available: ", len(GPUs))
-#tf.config.experimental.set_memory_growth(GPUs[0], True)
-
-#AUTOTUNE = tf.data.experimental.AUTOTUNE
 IMG_SHAPE = ds.IMG_SIZE + (3,)
 
 
