@@ -73,3 +73,31 @@ def get_model_ResNet101_1b():
 
     return model
 
+
+# create model ResNet101_1b
+# regular ResNet101 trained on imagenet, with layers above 120 trainable
+# last layers replace to be single sigmoid out
+def get_model_ResNet101_1c():
+    #start with base ResNet101
+    base_model = tf.keras.applications.ResNet101(
+        input_shape=IMG_SHAPE,
+        include_top=False,
+        weights="imagenet",
+        input_tensor=None
+    )
+
+    # tune which layers are adjusted during training
+    base_model.trainable = True
+    fine_tune_at = 280
+    for layer in base_model.layers[:fine_tune_at]:
+        layer.trainable = False
+
+    inputs = tf.keras.Input(shape=IMG_SHAPE)
+    x = base_model(inputs, training=False)
+    x = layers.GlobalAveragePooling2D()(x)
+    x = layers.Dropout(0.2)(x)      # using .2 dropout for this model
+    outputs = layers.Dense(1, activation='sigmoid')(x)
+
+    model = tf.keras.Model(inputs, outputs)
+
+    return model

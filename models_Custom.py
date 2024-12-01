@@ -13,8 +13,8 @@ IMG_SHAPE = ds.IMG_SIZE + (3,)
 # image standardization
 # used for our custom models
 def standardize_image(image, label):
-    #return tf.image.per_image_standardization(image), label
-    return tf.cast(image, tf.float32) / 255.0, label
+    return tf.image.per_image_standardization(image), label
+    #return tf.cast(image, tf.float32) / 255.0, label
 
 
 # create model
@@ -34,6 +34,78 @@ def get_model_Custom_1a():
             layers.MaxPooling2D(pool_size=(2,2)),
 
             layers.Flatten(),
+            layers.Dense(16, activation='relu'),
+            layers.Dense(1, activation='sigmoid'),
+
+        ]
+    )
+
+    return model
+
+
+# create model
+# 6 Conv layers, 3 FC layers
+def get_model_Custom_2a():
+
+    model = keras.Sequential(
+        [
+            keras.Input(shape=(224,224,3)),
+            layers.Conv2D(32, (3,3), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Conv2D(48, (3,3), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Conv2D(48, (3,3), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Conv2D(64, (3,3), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Conv2D(64, (3,3), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Conv2D(128, (3,3), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Flatten(),
+            layers.Dense(32, activation='relu'),
+            layers.Dense(16, activation='relu'),
+            layers.Dense(1, activation='sigmoid'),
+
+        ]
+    )
+
+    return model
+
+
+# create model
+# 6 Conv layers, 3 FC layers, larger filters
+def get_model_Custom_2b():
+
+    model = keras.Sequential(
+        [
+            keras.Input(shape=(224,224,3)),
+            layers.Conv2D(32, (5,5), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Conv2D(48, (5,5), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Conv2D(48, (3,3), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Conv2D(64, (5,5), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Conv2D(64, (3,3), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Conv2D(128, (3,3), padding='valid', activation='relu'),
+            layers.MaxPooling2D(pool_size=(2,2)),
+
+            layers.Flatten(),
+            layers.Dense(32, activation='relu'),
             layers.Dense(16, activation='relu'),
             layers.Dense(1, activation='sigmoid'),
 
