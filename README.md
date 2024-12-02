@@ -14,19 +14,18 @@ it more complicated than a normal object detection problem.
 # Quick Start
 
 # Description of Files
-* Comparisons.ipynb - Jupyter notebook used while comparing models
-* datasets.py - contains functions for retrieving the training, dev, test, and test_dark datasets
+* train_models.py - Executable used to train a model and run tests against the other datasets 
+* test_environment.py - Executable used while testing the environment 
 * evaluate.py - TBD
-* performance.py - contains dictionary of metrics collected during training and testing of various models
-
-* train_models.py - executable used to train a model and run tests against the other datasets 
-* test_environment.py - executable used while testing the environment 
-
-* models_Custom.py - contains functions to retrieve various models
-* models_MobileNetV2.py - contains functions to retrieve various models based on MobileNetV2
-* models_ResNet101.py - contains functions to retrieve various models based on ResNet101
-
-
+&nbsp;   
+* Comparisons.ipynb - Jupyter notebook used while comparing models
+* datasets.py - Contains functions for retrieving the training, dev, test, and test_dark datasets
+* performance.py - Contains dictionary of metrics collected during training and testing of various models
+&nbsp;  
+* models_Custom.py - Contains functions to retrieve various models
+* models_MobileNetV2.py - Contains functions to retrieve various models based on MobileNetV2
+* models_ResNet101.py - Contains functions to retrieve various models based on ResNet101
+&nbsp;  
 * ImageAugmentation Directory
     * frameExtraction.py - executable used to extract frames and augment the images used in the datasets
     * positiveFrameExtraction.py - executable used to extract and augment the positive images since they get more augmentation
