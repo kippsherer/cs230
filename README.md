@@ -27,10 +27,13 @@ it more complicated than a normal object detection problem.
 * models_ResNet101.py - Contains functions to retrieve various models based on ResNet101
 &nbsp;  
 * ImageAugmentation Directory
-    * frameExtraction.py - executable used to extract frames and augment the images used in the datasets
-    * positiveFrameExtraction.py - executable used to extract and augment the positive images since they get more augmentation
+    * frameExtraction.py - Executable used to extract frames and augment the images used in the datasets
+    * positiveFrameExtraction.py - Executable used to extract and augment the positive images since they get more augmentation
 
-
+# Retrieve Datasets
+Train - http://kippsherer.com/images/train.zip (3G)
+Dev - http://kippsherer.com/images/dev.zip (174M)
+Test - http://kippsherer.com/images/test.zip (174M)
 
 
 

@@ -25,13 +25,14 @@ tf.config.experimental.set_memory_growth(GPUs[0], True)
 
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 IMG_SHAPE = ds.IMG_SIZE + (3,)
-
+tf.random.set_seed(42)
 
 # get the model we want to train, set the preprocessing function
+# set image standardization function and model to use
 standardize_image = mnv2.standardize_image
 #model = mnv2.get_model_MobileNetV2_1a()
 #model = mnv2.get_model_MobileNetV2_1b()
-model = mnv2.get_model_MobileNetV2_1c()
+#model = mnv2.get_model_MobileNetV2_1c()
 model = mnv2.get_model_MobileNetV2_2a()
 
 #standardize_image = rn.standardize_image
@@ -43,6 +44,10 @@ model = mnv2.get_model_MobileNetV2_2a()
 #model = cus.get_model_Custom_1a()
 #model = cus.get_model_Custom_2a()
 #model = cus.get_model_Custom_2b()
+
+
+# set the number of epocs to use during training
+epochs = 30
 
 
 # compile the model
@@ -60,7 +65,6 @@ model.compile(
 )
 
 
-
 # retrieve our training dataset
 ds_train = ds.get_dataset_train()
 ds_train = ds_train.prefetch(buffer_size=AUTOTUNE)
@@ -68,10 +72,8 @@ ds_train_std = ds_train.map(standardize_image)
 
 
 # standardize the dataset and train the model
-history = model.fit(ds_train_std, epochs=30, verbose=2)
+history = model.fit(ds_train_std, epochs=epochs, verbose=2)
 print (history.history)
-
-
 
 
 # evaluate the model with the dev dataset
@@ -83,14 +85,12 @@ result = model.evaluate(ds_dev_std, verbose=2)
 print ( dict(zip(statistics, result)) )
 
 
-
 # evaluate the model with the test dataset
 print ("Test dataset")
 ds_test = ds.get_dataset_test()
 ds_test_std = ds_test.map(standardize_image)
 result = model.evaluate(ds_test_std, verbose=2)
 print ( dict(zip(statistics, result)) )
-
 
 
 # evaluate the model with the test dataset
@@ -101,6 +101,7 @@ result = model.evaluate(ds_test_dark_std, verbose=2)
 print ( dict(zip(statistics, result)) )
 
 
+# save model weights
 
 
 
