@@ -32,6 +32,7 @@ standardize_image = mnv2.standardize_image
 #model = mnv2.get_model_MobileNetV2_1a()
 #model = mnv2.get_model_MobileNetV2_1b()
 model = mnv2.get_model_MobileNetV2_1c()
+model = mnv2.get_model_MobileNetV2_2a()
 
 #standardize_image = rn.standardize_image
 #model = rn.get_model_ResNet101_1a()
@@ -67,7 +68,7 @@ ds_train_std = ds_train.map(standardize_image)
 
 
 # standardize the dataset and train the model
-history = model.fit(ds_train_std, epochs=15, verbose=2)
+history = model.fit(ds_train_std, epochs=30, verbose=2)
 print (history.history)
 
 
