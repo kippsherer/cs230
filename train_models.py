@@ -7,12 +7,15 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 #import numpy as np
+import random
+import string
 import tensorflow as tf
 from tensorflow import keras
 #from tensorflow.keras import layers
 import matplotlib.pyplot as plt
 
 import datasets as ds
+
 import models_MobileNetV2 as mnv2
 #import models_ResNet101 as rn
 #import models_Custom as cus
@@ -46,8 +49,12 @@ model = mnv2.get_model_MobileNetV2_2a()
 #model = cus.get_model_Custom_2b()
 
 
-# set the number of epocs to use during training
-epochs = 30
+# set some variables before training
+name = model.name + '_' + ''.join(random.choices(string.ascii_lowercase, k=4))
+stats = {}
+stats[name] = {}
+epochs = 3
+
 
 
 # compile the model
@@ -65,7 +72,7 @@ model.compile(
 )
 
 
-# retrieve our training dataset
+# retrieve our training dataset and standardize it
 ds_train = ds.get_dataset_train()
 ds_train = ds_train.prefetch(buffer_size=AUTOTUNE)
 ds_train_std = ds_train.map(standardize_image)
@@ -73,7 +80,7 @@ ds_train_std = ds_train.map(standardize_image)
 
 # standardize the dataset and train the model
 history = model.fit(ds_train_std, epochs=epochs, verbose=2)
-print (history.history)
+stats[name]['training'] = history.history
 
 
 # evaluate the model with the dev dataset
@@ -82,7 +89,8 @@ print ("Dev dataset")
 ds_dev = ds.get_dataset_dev()
 ds_dev_std = ds_dev.map(standardize_image)
 result = model.evaluate(ds_dev_std, verbose=2)
-print ( dict(zip(statistics, result)) )
+#print ( dict(zip(statistics, result)) )
+stats[name]['dev'] = dict(zip(statistics, result))
 
 
 # evaluate the model with the test dataset
@@ -90,7 +98,8 @@ print ("Test dataset")
 ds_test = ds.get_dataset_test()
 ds_test_std = ds_test.map(standardize_image)
 result = model.evaluate(ds_test_std, verbose=2)
-print ( dict(zip(statistics, result)) )
+#print ( dict(zip(statistics, result)) )
+stats[name]['test'] = dict(zip(statistics, result))
 
 
 # evaluate the model with the test dataset
@@ -98,10 +107,12 @@ print ("Test Dark dataset")
 ds_test_dark = ds.get_dataset_test_dark()
 ds_test_dark_std = ds_test_dark.map(standardize_image)
 result = model.evaluate(ds_test_dark_std, verbose=2)
-print ( dict(zip(statistics, result)) )
+#print ( dict(zip(statistics, result)) )
+stats[name]['test_dark'] = dict(zip(statistics, result))
 
 
 # save model weights
-
+model.save('models/' + name + '.keras')
+print (stats)
 
 

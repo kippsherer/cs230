@@ -39,6 +39,7 @@ def get_model_Custom_1a():
 
         ]
     )
+    model.name = "Custom_1a"
 
     return model
 
@@ -75,6 +76,7 @@ def get_model_Custom_2a():
 
         ]
     )
+    model.name = "Custom_2a"
 
     return model
 
@@ -111,6 +113,7 @@ def get_model_Custom_2b():
 
         ]
     )
+    model.name = "Custom_2b"
 
     return model
 

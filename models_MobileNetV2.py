@@ -42,6 +42,7 @@ def get_model_MobileNetV2_1a():
     outputs = layers.Dense(1, activation='sigmoid')(x)
 
     model = tf.keras.Model(inputs, outputs)
+    model.name = "MobileNetV2_1a"
 
     return model
 
@@ -72,6 +73,7 @@ def get_model_MobileNetV2_1b():
     outputs = layers.Dense(1, activation='sigmoid')(x)
 
     model = tf.keras.Model(inputs, outputs)
+    model.name = "MobileNetV2_1b"
 
     return model
 
@@ -102,6 +104,7 @@ def get_model_MobileNetV2_1c():
     outputs = layers.Dense(1, activation='sigmoid')(x)
 
     model = tf.keras.Model(inputs, outputs)
+    model.name = "MobileNetV2_1c"
 
     return model
     
@@ -132,5 +135,6 @@ def get_model_MobileNetV2_2a():
     outputs = layers.Dense(1, activation='sigmoid')(x)
 
     model = tf.keras.Model(inputs, outputs)
+    model.name = "MobileNetV2_2a"
 
     return model

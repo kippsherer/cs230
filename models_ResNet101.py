@@ -41,6 +41,7 @@ def get_model_ResNet101_1a():
     outputs = layers.Dense(1, activation='sigmoid')(x)
 
     model = tf.keras.Model(inputs, outputs)
+    model.name = "ResNet101_1a"
 
     return model
 
@@ -70,6 +71,7 @@ def get_model_ResNet101_1b():
     outputs = layers.Dense(1, activation='sigmoid')(x)
 
     model = tf.keras.Model(inputs, outputs)
+    model.name = "ResNet101_1b"
 
     return model
 
@@ -99,5 +101,6 @@ def get_model_ResNet101_1c():
     outputs = layers.Dense(1, activation='sigmoid')(x)
 
     model = tf.keras.Model(inputs, outputs)
+    model.name = "ResNet101_1c"
 
     return model
