@@ -1,71 +1,51 @@
 #!/usr/bin/env python
 
-# In[ ]:
-
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 #import numpy as np
-#import tensorflow as tf
-#from tensorflow import keras
-#from tensorflow.keras import layers
+import random
+import string
+import tensorflow as tf
+from tensorflow import keras
 import matplotlib.pyplot as plt
 
-# %cd /home/ubuntu/files/cs230
-
+import datasets as ds
 import performance as stats
 
+import models_MobileNetV2 as mnv2
+import models_ResNet101 as rn
+import models_Custom as cus
 
-# create plots
-plt.figure(figsize=(10, 10))
+statistics = ['binary_crossentropy', 'accuracy', 'precision', 'recall', 'f1_score', 'false_negatives', 'false_positives']
 
 
-# create training accuracy plots
-plt.subplot(2, 1, 1)
-plt.title('Training Accuracy')
-plt.xlabel('epoch')
-plt.ylabel('Accuracy')
+# NOTE: ResNet models exceed GitHub size limits, so those are excluded from the repo.
+# ['MobileNetV2_1a_nuky', 'MobileNetV2_1a_nvhi', 'MobileNetV2_1b_yrqb', 'MobileNetV2_1b_elvb', 'MobileNetV2_1b_pnli', 'MobileNetV2_1c_nhsg', 'MobileNetV2_2a_pulz', 'MobileNetV2_2a_apxw', 'MobileNetV2_2a_etti', 
+#  'ResNet101_1a_hqtc', 'ResNet101_1b_gtpj', 'ResNet101_1c_hkkp', 'ResNet101_1c_fbce', 
+#  'Custom_1a_lctx', 'Custom_2a_qdix', 'Custom_2b_qtve', 'Custom_1a_zhyk', 'Custom_2a_nvxs', 'Custom_2b_oyrn']
+models_to_evaluate = ['Custom_1a_zhyk', 'Custom_2a_nvxs', 'Custom_2b_oyrn']
+
+# get our dataset
+dataset = ds.get_dataset_test()
+
+# set our standardization
+#standardize_image = mnv2.standardize_image
+#standardize_image = rn.standardize_image
+standardize_image = cus.standardize_image
+
 
 for model in stats.model_statistics:
     #print (model)
-    plt.plot(stats.model_statistics[model]['training']['accuracy'], label=model+" (" + str(stats.model_statistics[model]['training']['accuracy'][-1]) + ")")
+    if model not in models_to_evaluate:
+        continue
 
-plt.ylim([min(plt.ylim()),1.01])
-plt.legend(loc='lower right')
+    # load model
+    model = tf.keras.models.load_model('models/' + model + '.keras')
 
+    print (model)
 
-# create training accuracy plots
-plt.subplot(2, 1, 2)
-plt.title('Training Loss')
-plt.xlabel('epoch')
-plt.ylabel('Loss')
-
-for model in stats.model_statistics:
-    #print (model)
-    plt.plot(stats.model_statistics[model]['training']['loss'], label=model+" (" + str(stats.model_statistics[model]['training']['loss'][-1]) + ")")
-
-plt.ylim([min(plt.ylim()),max(plt.ylim())])
-plt.legend(loc='upper right')
-
-plt.show()
+    # standardize images
+    ds_std = dataset.map(standardize_image)
+    result = model.evaluate(ds_std, verbose=2)
 
 
-
-
-plt.figure(figsize=(5, 15))
-fig, ax = plt.subplots()
-
-table_data=[]
-row_labels=[]
-for model in stats.model_statistics:
-    #table_data.append( [model] + list(stats.model_statistics[model]['test'].values()) )
-    table_data.append( list(stats.model_statistics[model]['test'].values()) )
-    row_labels.append(model)
-
-col_labels = list( stats.model_statistics['MobileNetV2_1a']['test'].keys() )
-
-table = ax.table(cellText=table_data, colLabels=col_labels, rowLabels=row_labels, loc='center')
-
-table.set_fontsize(14)
-table.scale(2,2)
-ax.axis('off')
-plt.show()
