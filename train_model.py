@@ -16,9 +16,9 @@ import matplotlib.pyplot as plt
 
 import datasets as ds
 
-import models_MobileNetV2 as mnv2
+#import models_MobileNetV2 as mnv2
 #import models_ResNet101 as rn
-#import models_Custom as cus
+import models_Custom as cus
 
 
 # to enable GPUs
@@ -32,8 +32,8 @@ tf.random.set_seed(42)
 
 # get the model we want to train, set the preprocessing function
 # set image standardization function and model to use
-standardize_image = mnv2.standardize_image
-model = mnv2.get_model_MobileNetV2_1a()
+#standardize_image = mnv2.standardize_image
+#model = mnv2.get_model_MobileNetV2_1a()
 #model = mnv2.get_model_MobileNetV2_1b()
 #model = mnv2.get_model_MobileNetV2_1c()
 #model = mnv2.get_model_MobileNetV2_2a()
@@ -43,10 +43,10 @@ model = mnv2.get_model_MobileNetV2_1a()
 #model = rn.get_model_ResNet101_1b()
 #model = rn.get_model_ResNet101_1c()
 
-#standardize_image = cus.standardize_image
+standardize_image = cus.standardize_image
 #model = cus.get_model_Custom_1a()
 #model = cus.get_model_Custom_2a()
-#model = cus.get_model_Custom_2b()
+model = cus.get_model_Custom_2b()
 
 
 # set some variables before training

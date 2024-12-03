@@ -12,11 +12,25 @@ What makes this project interesting from a deep learning point of view are the c
 it more complicated than a normal object detection problem.
 
 # Quick Start
+    * Train a model
+        1. edit datasets.py, set DATASET_DIRECTORY to correct directory
+        2. edit train_model.py, include correct models_ file
+        3. edit train_model.py, adjust standardization and model to be used
+        4. execute train_model.py
+
+    * Evaluate model(s)
+        1. edit datasets.py, set DATASET_DIRECTORY to correct directory
+        2. edit evaluate.py, set models_to_evaluate to desired models.
+        3. execute evaluate.py
+
+    * Graph model(s)
+        1. open Comparisons.ipynb Jupyter notebook
+        2. follow comments in the notebook
 
 # Description of Files
-* train_models.py - Executable used to train a model and run tests against the other datasets 
+* train_model.py - Executable used to train a model and run tests against the other datasets 
 * test_environment.py - Executable used while testing the environment 
-* evaluate.py - TBD
+* evaluate.py - Executable used to test and graph models
 &nbsp;   
 * Comparisons.ipynb - Jupyter notebook used while comparing models
 * datasets.py - Contains functions for retrieving the training, dev, test, and test_dark datasets
@@ -29,6 +43,9 @@ it more complicated than a normal object detection problem.
 * ImageAugmentation Directory
     * frameExtraction.py - Executable used to extract frames and augment the images used in the datasets
     * positiveFrameExtraction.py - Executable used to extract and augment the positive images since they get more augmentation
+
+* models Directory
+Directory where the trained models are saved in .keras format after running train_model.py. NOTE: ResNet models exceed GitHubs size limit and are excluded
 
 # Retrieve Datasets
 * Train - http://kippsherer.com/images/train.zip (3G)

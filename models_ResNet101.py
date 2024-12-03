@@ -76,8 +76,8 @@ def get_model_ResNet101_1b():
     return model
 
 
-# create model ResNet101_1b
-# regular ResNet101 trained on imagenet, with layers above 120 trainable
+# create model ResNet101_1c
+# regular ResNet101 trained on imagenet, with layers above 280 trainable
 # last layers replace to be single sigmoid out
 def get_model_ResNet101_1c():
     #start with base ResNet101
